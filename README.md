@@ -19,6 +19,7 @@ The same icons at 1024 by 1024 are in `1024/`.
 | `notes.png` | Meeting notes | speech bubble with a sound wave and pencil |
 | `shelf-check.png` | Shelf Check | shelf with a star |
 | `motion.png` | Motion graphics | bouncing ball |
+| `longhorn.png` | Longhorn | the Longhorn project's own mark, restyled to match |
 
 New ones are made with `tools/make-icons.mjs` (see the top of that file).
 
