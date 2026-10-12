@@ -5,3 +5,5 @@ work/
 variants/
 bare/*
 !bare/cotton/
+!bare/lime/
+!bare/_cotton/

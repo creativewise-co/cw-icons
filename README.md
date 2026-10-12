@@ -3,24 +3,27 @@
 Icons for the apps on the CreativeWise dashboard, in two styles:
 
 - **card**: a lime glyph on a green card, a sky card tilted behind, and print grain. In `card/`.
-- **cotton**: the glyph alone in cotton, with the grain, on a transparent background. For a tile that is already green. In `bare/cotton/`.
+- **lime**: the glyph alone in the brand lime, with the grain, on a transparent background. For a tile that is already green. In `bare/lime/`.
+- **cotton**: the same in cotton. In `bare/_cotton/`.
+
+`bare/cotton/` is where the first no-card links pointed. It is kept so those links work, and holds whichever no-card set is in use: lime at the moment, despite the name.
 
 All are 512 by 512 PNGs. The card style at 1024 by 1024 is in `1024/`.
 
 ## Which style the links serve
 
 The icons at the top of the repo (`games.png`, `vpn.png`, ...) are the ones
-the dashboard links to. They are a copy of one of the two sets, and the file
+the dashboard links to. They are a copy of one of the three sets, and the file
 `CURRENT` says which. To switch every icon at once:
 
 ```bash
-npm run use cotton   # or: npm run use card
-git commit -am "Switch the icons to cotton" && git push
+npm run use lime   # or: cotton, or card
+git commit -am "Switch the icons to lime" && git push
 ```
 
 GitHub can take about five minutes to serve the new files. The links never
 change, so nothing on the dashboard has to be touched. To pin one style
-whatever `CURRENT` says, link into `card/` or `bare/cotton/` instead.
+whatever `CURRENT` says, link into `card/`, `bare/lime/` or `bare/_cotton/` instead.
 
 | File | App | Icon |
 | --- | --- | --- |
