@@ -21,6 +21,19 @@ The same icons at 1024 by 1024 are in `1024/`.
 | `motion.png` | Motion graphics | bouncing ball |
 | `longhorn.png` | Longhorn | the Longhorn project's own mark, restyled to match |
 
+## Without the card
+
+`bare/cotton/` has the same twelve as the glyph alone: cotton, with the
+grain, on a transparent background and no card. They are for a tile that is
+already green.
+
+```
+https://raw.githubusercontent.com/creativewise-co/cw-icons/main/bare/cotton/games.png
+```
+
+The bare glyphs these are made from are in `glyphs/`, and
+`tools/make-variants.mjs` makes every icon in other colours from them.
+
 New ones are made with `tools/make-icons.mjs` (see the top of that file).
 
 To use one, link to its raw file:

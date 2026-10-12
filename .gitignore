@@ -1,3 +1,7 @@
 node_modules/
 work/
 .DS_Store
+# made by tools/make-variants.mjs; only the sets in use are kept in git
+variants/
+bare/*
+!bare/cotton/
