@@ -1,10 +1,26 @@
 # CreativeWise app icons
 
-Icons for the apps on the CreativeWise dashboard. All green, one family:
-a lime glyph on a green card, a sky card tilted behind, and print grain.
+Icons for the apps on the CreativeWise dashboard, in two styles:
 
-The files in this folder are 512 by 512 PNGs with a transparent background.
-The same icons at 1024 by 1024 are in `1024/`.
+- **card**: a lime glyph on a green card, a sky card tilted behind, and print grain. In `card/`.
+- **cotton**: the glyph alone in cotton, with the grain, on a transparent background. For a tile that is already green. In `bare/cotton/`.
+
+All are 512 by 512 PNGs. The card style at 1024 by 1024 is in `1024/`.
+
+## Which style the links serve
+
+The icons at the top of the repo (`games.png`, `vpn.png`, ...) are the ones
+the dashboard links to. They are a copy of one of the two sets, and the file
+`CURRENT` says which. To switch every icon at once:
+
+```bash
+npm run use cotton   # or: npm run use card
+git commit -am "Switch the icons to cotton" && git push
+```
+
+GitHub can take about five minutes to serve the new files. The links never
+change, so nothing on the dashboard has to be touched. To pin one style
+whatever `CURRENT` says, link into `card/` or `bare/cotton/` instead.
 
 | File | App | Icon |
 | --- | --- | --- |
@@ -20,18 +36,9 @@ The same icons at 1024 by 1024 are in `1024/`.
 | `shelf-check.png` | Shelf Check | shelf with a star |
 | `motion.png` | Motion graphics | bouncing ball |
 | `longhorn.png` | Longhorn | the Longhorn project's own mark, restyled to match |
+| `project-hub.png` | Project Hub | ring binder with index tabs |
 
-## Without the card
-
-`bare/cotton/` has the same twelve as the glyph alone: cotton, with the
-grain, on a transparent background and no card. They are for a tile that is
-already green.
-
-```
-https://raw.githubusercontent.com/creativewise-co/cw-icons/main/bare/cotton/games.png
-```
-
-The bare glyphs these are made from are in `glyphs/`, and
+The bare glyphs everything is made from are in `glyphs/`.
 `tools/make-variants.mjs` makes every icon in other colours from them.
 
 New ones are made with `tools/make-icons.mjs` (see the top of that file).

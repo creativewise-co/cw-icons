@@ -1,0 +1,14 @@
+{
+  "cols": 4, "rows": 2,
+  "about": "All eight are ideas for one app called Project Hub: the place where a studio keeps the brief and all the information for each of its projects.",
+  "glyphs": [
+    ["folder", "An open folder with one sheet of paper sticking out of it, the sheet with two short lines of writing."],
+    ["hub", "A hub: one larger circle in the middle joined by short thick spokes to four smaller circles around it."],
+    ["clipboard", "A clipboard with a clip at the top and a three-item checklist on it."],
+    ["stack", "Three sheets of paper fanned out like a hand of cards, the front one with a folded corner and lines of writing."],
+    ["binder", "A ring binder seen from the front, closed, with three index tabs sticking out of its right side."],
+    ["brief-pin", "A sheet of paper with a folded corner and three lines of writing, held by a round pushpin at the top."],
+    ["board", "A board with three columns of small cards of different heights, like a project board."],
+    ["target-doc", "A document with a small target, three rings and a centre dot, overlapping its bottom corner."]
+  ]
+}

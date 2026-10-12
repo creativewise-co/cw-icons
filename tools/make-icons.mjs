@@ -6,7 +6,8 @@
 // JSON file: a grid, and one line per glyph), cuts each glyph out, and sets
 // it on the green card: a sky card tilted behind, a hard shadow, print grain.
 // Everything lands in the folder you name: <idea>.png at 1024, 512/<idea>.png,
-// the bare glyphs, and preview.png showing them all on dashboard tiles.
+// bare/<idea>.png (the glyph alone in cotton, with grain, no card), the bare
+// glyphs, and preview.png and preview-bare.png showing them on dashboard tiles.
 // Pick one and copy it to the top of the repo under the app's name.
 //
 // Needs OPENROUTER_API_KEY_GAMES (it reads the game hub's .env.local).
@@ -21,7 +22,9 @@ const ideas = JSON.parse(fs.readFileSync(ideasFile, 'utf8'));
 const { cols, rows, about, glyphs } = ideas; // glyphs: [[name, what to draw], ...]
 fs.mkdirSync(path.join(outDir, 'glyphs'), { recursive: true });
 fs.mkdirSync(path.join(outDir, '512'), { recursive: true });
+fs.mkdirSync(path.join(outDir, 'bare'), { recursive: true });
 
+const COTTON = [244, 242, 234];
 const LIME = [226, 235, 152], SKY = [195, 217, 237], CARD = [24, 100, 66], SHADE = [6, 46, 30], TILE = [11, 71, 46];
 
 // ---- 1. the glyphs: drawn on magenta, in one colour
@@ -79,7 +82,7 @@ function card(x, y, cx, cy, size, r, deg) {
 }
 const cover = (v) => Math.max(0, Math.min(1, v + .5));
 const TILTS = [-9, 8, -7, 9, 8, -8, 9, -7];
-const made = [];
+const made = [], bare = [];
 glyphs.forEach(([name], n) => {
   const g = PNG.sync.read(fs.readFileSync(path.join(outDir, 'glyphs', `${name}.png`))), G = 470, gx0 = (S - G) / 2 - 10, gy0 = (S - G) / 2 - 8, tilt = TILTS[n % TILTS.length];
   const glyph = (x, y) => { const u = Math.floor(((x - gx0) / G) * g.width), v = Math.floor(((y - gy0) / G) * g.height); return u < 0 || v < 0 || u >= g.width || v >= g.height ? 0 : g.data[(v * g.width + u) * 4 + 3] / 255; };
@@ -106,18 +109,30 @@ glyphs.forEach(([name], n) => {
     for (let k = 0; k < 3; k++) half.data[di + k] = A ? R[k] / A : 0; half.data[di + 3] = A / 4; }
   fs.writeFileSync(path.join(outDir, '512', `${name}.png`), PNG.sync.write(half));
   made.push(out);
+  // and without the card: the glyph alone in cotton, with the same grain, filling the square
+  const gb = (x, y) => { const u = Math.floor(((x - 62) / 900) * g.width), v = Math.floor(((y - 62) / 900) * g.height); return u < 0 || v < 0 || u >= g.width || v >= g.height ? 0 : g.data[(v * g.width + u) * 4 + 3] / 255; };
+  const b = new PNG({ width: 512, height: 512 }), grainB = new Float32Array(per * per).map(() => (rnd() + rnd() + rnd()) / 3 - .5);
+  for (let y = 0; y < 512; y++) for (let x = 0; x < 512; x++) { let A = 0, N = 0;
+    for (const [ox, oy] of [[0, 0], [1, 0], [0, 1], [1, 1]]) { A += gb(x * 2 + ox, y * 2 + oy); N += grainB[Math.floor((y * 2 + oy) / 3) * per + Math.floor((x * 2 + ox) / 3)] * 46 + (rnd() - .5) * 14; }
+    const i = (y * 512 + x) * 4; for (let k = 0; k < 3; k++) b.data[i + k] = Math.max(0, Math.min(255, COTTON[k] + N / 4)); b.data[i + 3] = Math.round((A / 4) * 255); }
+  fs.writeFileSync(path.join(outDir, 'bare', `${name}.png`), PNG.sync.write(b));
+  bare.push(b);
 });
 
 // ---- 3. how they look on the dashboard's tiles
-const T = 300, PER = Math.min(4, made.length), pv = new PNG({ width: PER * (T + 24) + 24, height: Math.ceil(made.length / PER) * (T + 24) + 24 });
-for (let i = 0; i < pv.data.length; i += 4) { pv.data[i] = 244; pv.data[i + 1] = 242; pv.data[i + 2] = 234; pv.data[i + 3] = 255; }
-made.forEach((ic, n) => { const ox = 24 + (n % PER) * (T + 24), oy = 24 + Math.floor(n / PER) * (T + 24);
-  for (let y = 0; y < T; y++) for (let x = 0; x < T; x++) {
-    if (cover(card(x, y, T / 2, T / 2, T, 36, 0)) < .5) continue;
-    const u = Math.floor(((x - 40) / (T - 80)) * S), v = Math.floor(((y - 30) / (T - 80)) * S), di = ((oy + y) * pv.width + ox + x) * 4;
-    let col = TILE;
-    if (u >= 0 && v >= 0 && u < S && v < S) { const si = (v * S + u) * 4, al = ic.data[si + 3] / 255; col = TILE.map((t, k) => t * (1 - al) + ic.data[si + k] * al); }
-    pv.data[di] = col[0]; pv.data[di + 1] = col[1]; pv.data[di + 2] = col[2];
-  } });
-fs.writeFileSync(path.join(outDir, 'preview.png'), PNG.sync.write(pv));
+function preview(list, size, inset, file) {
+  const T = 300, PER = Math.min(4, list.length), pv = new PNG({ width: PER * (T + 24) + 24, height: Math.ceil(list.length / PER) * (T + 24) + 24 });
+  for (let i = 0; i < pv.data.length; i += 4) { pv.data[i] = 244; pv.data[i + 1] = 242; pv.data[i + 2] = 234; pv.data[i + 3] = 255; }
+  list.forEach((ic, n) => { const ox = 24 + (n % PER) * (T + 24), oy = 24 + Math.floor(n / PER) * (T + 24);
+    for (let y = 0; y < T; y++) for (let x = 0; x < T; x++) {
+      if (cover(card(x, y, T / 2, T / 2, T, 36, 0)) < .5) continue;
+      const u = Math.floor(((x - inset) / (T - 2 * inset)) * size), v = Math.floor(((y - inset) / (T - 2 * inset)) * size), di = ((oy + y) * pv.width + ox + x) * 4;
+      let col = TILE;
+      if (u >= 0 && v >= 0 && u < size && v < size) { const si = (v * size + u) * 4, al = ic.data[si + 3] / 255; col = TILE.map((t, k) => t * (1 - al) + ic.data[si + k] * al); }
+      pv.data[di] = col[0]; pv.data[di + 1] = col[1]; pv.data[di + 2] = col[2];
+    } });
+  fs.writeFileSync(path.join(outDir, file), PNG.sync.write(pv));
+}
+preview(made, S, 40, 'preview.png');
+preview(bare, 512, 60, 'preview-bare.png');
 console.log(glyphs.map((g) => g[0]).join(', '));
