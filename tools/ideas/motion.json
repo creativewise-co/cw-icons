@@ -1,0 +1,14 @@
+{
+  "cols": 4, "rows": 2,
+  "about": "All eight are ideas for one app: a tool for making motion graphics, where shapes and type are animated on a timeline.",
+  "glyphs": [
+    ["bounce", "A ball bouncing: one solid ball, and behind it a dotted arc of smaller dots showing the path it took."],
+    ["timeline", "An animation timeline: three short horizontal bars stacked, each with a diamond keyframe on it, and one vertical playhead line crossing them."],
+    ["curve", "An easing curve: a thick S-shaped curve going from the bottom left to the top right inside a square frame, with a round handle at each end."],
+    ["morph", "A square turning into a circle: three shapes overlapping in a row, the first a square, the middle a rounded square, the last a circle."],
+    ["play-lines", "A play triangle with three horizontal speed lines trailing behind it on the left."],
+    ["spin-star", "A four-point star with two curved arrows around it, as if it is spinning."],
+    ["keyframes", "Three diamond keyframes joined by one smooth wavy path, the middle diamond higher than the others."],
+    ["frames", "Three rounded frames fanned out like a hand of cards, with a play triangle on the front one."]
+  ]
+}

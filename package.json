@@ -1,0 +1,10 @@
+{
+  "name": "cw-icons",
+  "private": true,
+  "type": "module",
+  "description": "App icons for the CreativeWise dashboard, and the script that makes them",
+  "scripts": {
+    "ideas": "node --env-file=../cw-game-hub/.env.local tools/make-icons.mjs"
+  },
+  "dependencies": { "pngjs": "^7.0.0" }
+}
